@@ -14,7 +14,7 @@ import controleur.Controleur;
 public class ChargementCsv {
 
 	public static ArrayList<String[]> returnTabCsv(String nomFichier) {
-		ArrayList<String[]> tabCsv = new ArrayList<>();
+		ArrayList<String[]> tabCsv = new ArrayList<String[]>();
 		try {
 			// URL resource = main.class.getResource("data/"+ nomFichier +
 			// ".csv");C:\\Users\\Edris\\eclipse-workspace\\ProjetJava\\src\\main\\resources\\data\\
