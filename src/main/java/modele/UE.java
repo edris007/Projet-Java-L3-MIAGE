@@ -9,12 +9,20 @@ public class UE {
 	private ArrayList<UE> lesPrerequis;
 	private Mention m;
 
-
-	public UE(String code,int eCTS, String nom, Mention m ) {
+	public UE(String code, int eCTS, String nom, Mention m) {
 		this.code = code;
 		this.nom = nom;
 		this.ects = eCTS;
-		this.m=m;
+		this.m = m;
+		this.lesPrerequis = new ArrayList<UE>();
+	}
+
+	public void addPrerequis(UE a) {
+		this.lesPrerequis.add(a);
+	}
+
+	public ArrayList<UE> getAllPrerequis() {
+		return this.lesPrerequis;
 	}
 
 	public String getCode() {

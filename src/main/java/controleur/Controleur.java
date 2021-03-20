@@ -9,8 +9,8 @@ import modele.Parcours;
 import modele.UE;
 
 /**
- * Classe comportant les différentes méthodes permettant de créer les différents
- * objets et collections d'objets, obtenu grâce à du CSV
+ * Classe comportant les diffï¿½rentes mï¿½thodes permettant de crï¿½er les diffï¿½rents
+ * objets et collections d'objets, obtenu grï¿½ce ï¿½ du CSV
  * 
  * @author Edris
  *
@@ -18,7 +18,7 @@ import modele.UE;
 public class Controleur {
 
 	/**
-	 * Cette méthode permet de retourner l'ensemble des étudiants
+	 * Cette mï¿½thode permet de retourner l'ensemble des ï¿½tudiants
 	 * 
 	 * @return
 	 */
@@ -32,7 +32,7 @@ public class Controleur {
 
 		return collectionEtudiant;
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -41,15 +41,13 @@ public class Controleur {
 		ArrayList<UE> collectionUE = new ArrayList<UE>();
 		ArrayList<String[]> contenuFichier = ChargementCsv.returnTabCsv("ue");
 		for (String[] colonne : contenuFichier) {
-			collectionUE.add(new UE(colonne[0], Integer.valueOf(colonne[1]), colonne[2],
-					getMention(colonne[3])));
+			UE a = new UE(colonne[0], Integer.valueOf(colonne[1]), colonne[2], getMention(colonne[3]));
+			getPrerequis(a);
+			collectionUE.add(a);
 		}
 
 		return collectionUE;
 	}
-
-	
-
 
 	public static ArrayList<Etudiant> collectionUeValide() {
 		ArrayList<Etudiant> collectionEtudiant = new ArrayList<Etudiant>();
@@ -72,13 +70,12 @@ public class Controleur {
 
 		return collectionEtudiant;
 	}
-	
+
 	public static ArrayList<UE> collectionUEParc(String path) {
 		ArrayList<UE> collectionUE = new ArrayList<UE>();
 		ArrayList<String[]> contenuFichier = ChargementCsv.returnTabCsvParc(path);
 		for (String[] colonne : contenuFichier) {
-			collectionUE.add(new UE(colonne[0], Integer.valueOf(colonne[1]), colonne[2],
-					getMention(colonne[3])));
+			collectionUE.add(new UE(colonne[0], Integer.valueOf(colonne[1]), colonne[2], getMention(colonne[3])));
 		}
 
 		return collectionUE;
@@ -108,7 +105,7 @@ public class Controleur {
 	}
 
 	/**
-	 * Cette méthode permet de retourner une collection d'UeValide
+	 * Cette mï¿½thode permet de retourner une collection d'UeValide
 	 * 
 	 * @see UeValide
 	 * @param idEtudiant
@@ -119,25 +116,42 @@ public class Controleur {
 		ArrayList<String[]> contenuFichier = ChargementCsv.returnTabCsv("ueValides");
 		for (String[] colonne : contenuFichier) {
 			if (colonne[1].equals(String.valueOf(idEtudiant))) {
-				collectionUEValide.add(new UeValide(getUE(colonne[0]), getEtudiant(Integer.valueOf(colonne[1])),Integer.valueOf(colonne[2]),
-						Integer.valueOf(colonne[3]),Boolean.valueOf(colonne[4]),Boolean.valueOf(colonne[5])));
+				UeValide a = new UeValide(getUE(colonne[0]), getEtudiant(Integer.valueOf(colonne[1])),
+						Integer.valueOf(colonne[2]), Integer.valueOf(colonne[3]), Boolean.valueOf(colonne[4]),
+						Boolean.valueOf(colonne[5]));
+				getPrerequis(a.getUe());
+				collectionUEValide.add(a);
 			}
 		}
 		return collectionUEValide;
 	}
-	
-	
+
+	/**
+	 * Cette mÃ©thode permet d'ajouter l'ensemble des prÃ©requis nÃ©cessaires Ã  un UE
+	 * de la classe UE
+	 * 
+	 * @see UE
+	 * @param u
+	 */
+	public static void getPrerequis(UE u) {
+		ArrayList<String[]> contenuFichier = ChargementCsv.returnTabCsv("prerequis");
+		for (String[] colonne : contenuFichier) {
+			if (colonne[0].equals(u.getCode())) {
+				u.addPrerequis(getUE(colonne[1]));
+			}
+		}
+	}
+
 	public static UE getUE(String codeUE) {
 		ArrayList<String[]> contenuFichier = ChargementCsv.returnTabCsv("ue");
 		for (String[] colonne : contenuFichier) {
 			if (colonne[0].equals(codeUE)) {
-				return new UE(colonne[0], Integer.valueOf(colonne[1]), colonne[2],
-						getMention(colonne[3]));
+				return new UE(colonne[0], Integer.valueOf(colonne[1]), colonne[2], getMention(colonne[3]));
 			}
 		}
 		return null;
 	}
-	
+
 	public static Mention getMention(String codeMention) {
 		ArrayList<String[]> contenuFichier = ChargementCsv.returnTabCsv("mention");
 		for (String[] colonne : contenuFichier) {
@@ -149,7 +163,7 @@ public class Controleur {
 	}
 
 	/**
-	 * Cette méthode permet de récupérer l'étudiant en question
+	 * Cette mï¿½thode permet de rï¿½cupï¿½rer l'ï¿½tudiant en question
 	 * 
 	 * @see Etudiant
 	 * @param numEtudiant
@@ -166,8 +180,7 @@ public class Controleur {
 		}
 		return null;
 	}
-	
-	
+
 	public static ArrayList<Etudiant> collectionUEEtudiant(String idUE) {
 		ArrayList<Etudiant> collectionUEValide = new ArrayList<Etudiant>();
 		ArrayList<String[]> contenuFichier = ChargementCsv.returnTabCsv("ueValides");
@@ -177,5 +190,53 @@ public class Controleur {
 			}
 		}
 		return collectionUEValide;
+	}
+
+	/**
+	 * Retourne l'ensemble des UE ou l'Ã©tudiant peut Ãªtre inscrits en fonction de
+	 * ces prÃ©requis
+	 * 
+	 * @param ue
+	 * @param listUeValide
+	 * @return
+	 */
+	public static boolean uePossible(UE ue, ArrayList<UeValide> listUeValide) {
+		boolean trouver = false;
+
+		/**
+		 * On vÃ©rifie tout d'abord que l'Ã©tudiant n'a pas dÃ©jÃ  validÃ© cet ue, ou qu'il
+		 * n'est pas dÃ©jÃ  inscrit Ã  cet UE, et si ce n'est pas le cas, que celui-ci n'a
+		 * aucun prÃ©requis avant de retourner vrai ou faux
+		 */
+		for (UeValide a : listUeValide) {
+			if (a.getUe().getCode().equals(ue.getCode()) && a.isEncours()) {
+				trouver = true;
+				break;
+			}
+		}
+
+		// On vÃ©rifie que cet UE n'a aucun prÃ©requis
+		if (!trouver && ue.getAllPrerequis().size() <= 0) {
+			return true;
+		}
+
+		/**
+		 * On regarde maintenant si l'Ã©tudiant Ã  tout les prÃ©requis nÃ©cesaires pour
+		 * passer cet ue
+		 */
+		int nbPrerequis = 0;
+		for (UE a : ue.getAllPrerequis()) {
+			for (UeValide b : listUeValide) {
+				if (a.getCode().equals(b.getUe().getCode()) && b.isValide() && !b.isEncours()) {
+					nbPrerequis++;
+					break;
+				}
+			}
+			if (nbPrerequis == ue.getAllPrerequis().size()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 import controleur.Controleur;
 import modele.Etudiant;
+import modele.UE;
 import modele.UeValide;
 
 public class VisuEt extends JFrame {
@@ -139,14 +140,13 @@ public class VisuEt extends JFrame {
 		spUESuivis.setViewportView(tableUESuivis);
 
 		DefaultTableModel model2 = (DefaultTableModel) tableUESuivis.getModel();
-	/*	for (UeValide e : Controleur.collectionUEValide(Integer.valueOf(lblResID.getText()))) {
+		for (UeValide e : Controleur.collectionUEValide(Integer.valueOf(lblResID.getText()))) {
 			if (e.isEncours()) {
 				String[] tabEtu = { e.getUe().getCode(), e.getUe().getNom() };
 				model2.addRow(tabEtu);
 			}
 		}
 
-*/
 		JScrollPane spUEDispo = new JScrollPane();
 		spUEDispo.setBounds(34, 476, 245, 106);
 		contentPane.add(spUEDispo);
@@ -160,13 +160,12 @@ public class VisuEt extends JFrame {
 
 		DefaultTableModel model3 = (DefaultTableModel) tableUEDispo.getModel();
 
-	/*	for (UeValide e : Controleur.collectionUEValide(Integer.valueOf(lblResID.getText()))) {
-			//if (e.isEncours()) {
-			// TODO Méthode à faire
-				String[] tabEtu = { e.getUe().getCode(), e.getUe().getNom() };
+		for (UE b : Controleur.collectionUE()) {
+			if (Controleur.uePossible(b, Controleur.collectionUEValide(Integer.valueOf(lblResID.getText())))) {
+				String[] tabEtu = { b.getCode(), b.getNom() };
 				model3.addRow(tabEtu);
-		//	}
-		}*/
+			}
+		}
 
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new ActionListener() {
