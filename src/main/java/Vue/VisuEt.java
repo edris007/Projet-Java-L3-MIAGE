@@ -114,9 +114,7 @@ public class VisuEt extends JFrame {
 		contentPane.add(spUEVal);
 
 		tableUEVal = new JTable();
-		tableUEVal.setModel(new DefaultTableModel(
-				new Object[][] { { null, null }, { null, null }, { null, null }, { null, null }, },
-				new String[] { "Code", "Nom" }));
+		tableUEVal.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Code", "Nom" }));
 
 		spUEVal.setViewportView(tableUEVal);
 
@@ -134,9 +132,7 @@ public class VisuEt extends JFrame {
 		contentPane.add(spUESuivis);
 
 		tableUESuivis = new JTable();
-		tableUESuivis.setModel(new DefaultTableModel(
-				new Object[][] { { null, null }, { null, null }, { null, null }, { null, null }, },
-				new String[] { "Code", "Nom" }));
+		tableUESuivis.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Code", "Nom" }));
 		spUESuivis.setViewportView(tableUESuivis);
 
 		DefaultTableModel model2 = (DefaultTableModel) tableUESuivis.getModel();
@@ -152,17 +148,15 @@ public class VisuEt extends JFrame {
 		contentPane.add(spUEDispo);
 
 		tableUEDispo = new JTable();
-		tableUEDispo.setModel(new DefaultTableModel(
-				new Object[][] { { null, null, null, null }, { null, null, null, null }, { null, null, null, null },
-						{ null, null, null, null }, { null, null, null, null }, },
-				new String[] { "Mention", "Parcours", "Code", "Nom" }));
+		tableUEDispo.setModel(
+				new DefaultTableModel(new Object[][] {}, new String[] { "Mention", "Parcours", "Code", "Nom" }));
 		spUEDispo.setViewportView(tableUEDispo);
 
 		DefaultTableModel model3 = (DefaultTableModel) tableUEDispo.getModel();
 
 		for (UE b : Controleur.collectionUE()) {
 			if (Controleur.uePossible(b, Controleur.collectionUEValide(Integer.valueOf(lblResID.getText())))) {
-				String[] tabEtu = { b.getCode(), b.getNom() };
+				String[] tabEtu = { null, null, b.getCode(), b.getNom() };
 				model3.addRow(tabEtu);
 			}
 		}

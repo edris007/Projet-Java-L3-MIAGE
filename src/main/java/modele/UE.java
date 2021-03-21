@@ -17,6 +17,10 @@ public class UE {
 		this.lesPrerequis = new ArrayList<UE>();
 	}
 
+	public Mention getMention() {
+		return this.m;
+	}
+
 	public void addPrerequis(UE a) {
 		this.lesPrerequis.add(a);
 	}

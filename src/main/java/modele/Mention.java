@@ -1,6 +1,5 @@
 package modele;
 
-import java.util.ArrayList;
 
 public class Mention {
 	private int id;
